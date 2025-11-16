@@ -18,9 +18,10 @@
 - Entity Framework Core  
 - ASP.NET Core Web API  
 - Swagger/OpenAPI
-
+(В форме при отправке не было возможности выбрать C# как язык на котором выполнена работа. так как надо было что-то выбрать, выбрал С++)
 ## Быстрый запуск
 
 ### Docker Compose
 ```bash
 docker-compose up --build
+
