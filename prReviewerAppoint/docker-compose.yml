@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:15
+    container_name: pr-review-db
+    restart: always
+    environment:
+      POSTGRES_USER: "pguser"
+      POSTGRES_PASSWORD: "ArtemIt2025"
+      POSTGRES_DB: pr_review
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pguser -d pr_review"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: pr-review-service
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://0.0.0.0:8080"
+      DATABASE_URL: "Host=db;Port=5432;Database=pr_review;Username=pguser;Password=ArtemIt2025"
+    ports:
+      - "8080:8080"
+    command: ["dotnet", "prReviewerAppoint.dll"]
+
+volumes:
+  db_data:
